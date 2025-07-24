@@ -19,7 +19,7 @@ THEATRE_URLS = ["https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-h
 "https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250809",
 "https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250810",
 "https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250810",
-"https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250724"]
+"https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250725"]
 MOVIE_NAME = "Hari Hara Veera Mallu - Part 1 Sword vs Spirit"
 
 # Email configuration - use environment variables for security
