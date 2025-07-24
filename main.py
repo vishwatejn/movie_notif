@@ -1,6 +1,6 @@
 import time
-import requests
-from bs4 import BeautifulSoup
+import asyncio
+from playwright.async_api import async_playwright
 import smtplib
 from email.message import EmailMessage
 import os
@@ -21,16 +21,6 @@ THEATRE_URLS = ["https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-h
 "https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250810",
 "https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250724"]
 MOVIE_NAME = "Hari Hara Veera Mallu - Part 1 Sword vs Spirit"
-
-# Headers to mimic a real browser
-HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    'Accept-Language': 'en-US,en;q=0.5',
-    'Accept-Encoding': 'gzip, deflate',
-    'Connection': 'keep-alive',
-    'Upgrade-Insecure-Requests': '1',
-}
 
 # Email configuration - use environment variables for security
 SMTP_SERVER = 'smtp.gmail.com'
@@ -67,34 +57,62 @@ def extract_theatre_info(url):
         logging.error(f"Error parsing URL {url}: {e}")
         return "Unknown Theatre", "Unknown Date"
 
-def check_movie():
+async def check_movie():
     try:
         logging.info(f"Checking for {MOVIE_NAME} at {len(THEATRE_URLS)} theatres")
         available_theatres = []
         
-        for url in THEATRE_URLS:
-            try:
-                response = requests.get(url, headers=HEADERS, timeout=30)
-                if response.status_code != 200:
-                    logging.error(f"Failed to fetch page {url}: {response.status_code}")
+        async with async_playwright() as p:
+            # Launch browser with stealth settings
+            browser = await p.chromium.launch(
+                headless=True,
+                args=[
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-accelerated-2d-canvas',
+                    '--no-first-run',
+                    '--no-zygote',
+                    '--disable-gpu'
+                ]
+            )
+            
+            context = await browser.new_context(
+                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                viewport={'width': 1920, 'height': 1080}
+            )
+            
+            page = await context.new_page()
+            
+            for url in THEATRE_URLS:
+                try:
+                    logging.info(f"Checking {url}")
+                    
+                    # Navigate to the page with timeout
+                    await page.goto(url, wait_until='networkidle', timeout=30000)
+                    
+                    # Wait a bit for any dynamic content to load
+                    await page.wait_for_timeout(2000)
+                    
+                    # Get the page content
+                    page_content = await page.content()
+                    
+                    if MOVIE_NAME.lower() in page_content.lower():
+                        theatre_name, date = extract_theatre_info(url)
+                        available_theatres.append({
+                            'url': url,
+                            'theatre': theatre_name,
+                            'date': date
+                        })
+                        logging.info(f"{MOVIE_NAME} is available at {theatre_name} on {date}!")
+                    else:
+                        logging.info(f"Movie not found at {url}")
+                
+                except Exception as e:
+                    logging.error(f"Error checking {url}: {e}")
                     continue
-                
-                soup = BeautifulSoup(response.text, 'html.parser')
-                if MOVIE_NAME.lower() in soup.text.lower():
-                    theatre_name, date = extract_theatre_info(url)
-                    available_theatres.append({
-                        'url': url,
-                        'theatre': theatre_name,
-                        'date': date
-                    })
-                    logging.info(f"{MOVIE_NAME} is available at {theatre_name} on {date}!")
-                
-            except requests.exceptions.RequestException as e:
-                logging.error(f"Request error for {url}: {e}")
-                continue
-            except Exception as e:
-                logging.error(f"Unexpected error for {url}: {e}")
-                continue
+            
+            await browser.close()
         
         if available_theatres:
             logging.info(f"Found {MOVIE_NAME} at {len(available_theatres)} theatre(s)")
@@ -158,12 +176,12 @@ def send_email(available_theatres):
     except Exception as e:
         logging.error(f"Error sending email: {e}")
 
-def main():
+async def main():
     logging.info("Movie notification check started!")
     logging.info(f"Checking for '{MOVIE_NAME}'")
     
     # Check once and send notification if found
-    available_theatres = check_movie()
+    available_theatres = await check_movie()
     if available_theatres:
         send_email(available_theatres)
         logging.info("Movie found! Notification sent.")
@@ -173,4 +191,4 @@ def main():
     logging.info("Check completed. Exiting...")
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
