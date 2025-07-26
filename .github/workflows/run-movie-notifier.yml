@@ -39,6 +39,10 @@ jobs:
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
           AMB_0731_EMAILS: ${{ secrets.AMB_0731_EMAILS }}
           AMB_0730_EMAILS: ${{ secrets.AMB_0730_EMAILS }}
+          BRAM_0730_EMAILS: ${{ secrets.BRAM_0730_EMAILS }}
+          BRAM_0731_EMAILS: ${{ secrets.BRAM_0731_EMAILS }}
+          MALLI_0730_EMAILS: ${{ secrets.MALLI_0730_EMAILS }}
+          MALLI_0731_EMAILS: ${{ secrets.MALLI_0731_EMAILS }}
         run: python main_with_tracking.py
         timeout-minutes: 10
 
