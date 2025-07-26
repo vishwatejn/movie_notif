@@ -32,7 +32,7 @@ THEATRE_EMAIL_MAPPING = {
 # Get all unique theatre URLs for checking
 THEATRE_URLS = list(THEATRE_EMAIL_MAPPING.keys())
 
-MOVIE_NAME = "Kingdom"
+MOVIE_NAME = "Hari Hara Veera Mallu - Part 1 Sword vs Spirit"
 
 # Email configuration - use environment variables for security
 SMTP_SERVER = 'smtp.gmail.com'
@@ -554,9 +554,9 @@ def send_email(available_theatres):
             # Create subject line
             if len(theatres) == 1:
                 theatre = theatres[0]
-                msg['Subject'] = f"PENU TOOFANU thalonchi choosthe... tickets now available at {theatre['theatre']} on {theatre['date']}!"
+                msg['Subject'] = f"{MOVIE_NAME} tickets now available at {theatre['theatre']} on {theatre['date']}!"
             else:
-                msg['Subject'] = f"PENU TOOFANU thalonchi choosthe... tickets now available at {len(theatres)} theatres!"
+                msg['Subject'] = f"{MOVIE_NAME} tickets now available at {len(theatres)} theatres!"
             
             msg['From'] = SENDER_EMAIL
             msg['Bcc'] = ', '.join(recipient_emails)
