@@ -105,6 +105,14 @@ def save_notification_tracking(tracking_data):
                     commit_message = f"Update notification tracking - {len(tracking_data)} entries - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
                     subprocess.run(['git', 'commit', '-m', commit_message], check=True, cwd='.')
                     logging.info(f"Committed tracking data to git: {commit_message}")
+                    
+                    # Push changes to remote repository
+                    try:
+                        subprocess.run(['git', 'push', 'origin', 'main'], check=True, cwd='.')
+                        logging.info("Pushed tracking data to remote repository")
+                    except subprocess.CalledProcessError as push_error:
+                        logging.warning(f"Failed to push tracking data to remote: {push_error}")
+                        logging.info("Tracking data committed locally but not pushed to remote")
                 else:
                     logging.info("No changes to commit in tracking file")
             else:
