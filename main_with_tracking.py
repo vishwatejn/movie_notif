@@ -146,7 +146,6 @@ def mark_notification_sent(theatre_url, recipient_emails, tracking_data):
     notification_key = create_notification_key(theatre_url, recipient_emails)
     tracking_data[notification_key] = {
         'theatre_url': theatre_url,
-        'recipient_emails': recipient_emails,
         'sent_at': datetime.now().isoformat(),
         'movie_name': MOVIE_NAME
     }
