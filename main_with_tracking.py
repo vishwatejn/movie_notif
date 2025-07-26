@@ -32,7 +32,7 @@ THEATRE_EMAIL_MAPPING = {
 # Get all unique theatre URLs for checking
 THEATRE_URLS = list(THEATRE_EMAIL_MAPPING.keys())
 
-MOVIE_NAME = "Hari Hara Veera Mallu - Part 1 Sword vs Spirit"
+MOVIE_NAME = "F1: The Movie"
 
 # Email configuration - use environment variables for security
 SMTP_SERVER = 'smtp.gmail.com'
