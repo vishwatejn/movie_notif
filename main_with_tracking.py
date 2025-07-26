@@ -22,6 +22,11 @@ logging.basicConfig(
 THEATRE_EMAIL_MAPPING = {
     "https://in.bookmyshow.com/cinemas/hyderabad/amb-cinemas-gachibowli/buytickets/AMBH/20250730": os.getenv('AMB_0730_EMAILS', ''),
     "https://in.bookmyshow.com/cinemas/hyderabad/amb-cinemas-gachibowli/buytickets/AMBH/20250731": os.getenv('AMB_0731_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/mallikarjuna-70mm-a-c-dts-kukatpally/buytickets/MAHM/20250730": os.getenv('MALLI_0730_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/mallikarjuna-70mm-a-c-dts-kukatpally/buytickets/MAHM/20250731": os.getenv('MALLI_0731_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/bhramaramba-70mm-a-c-4k-dolby-kukatpally/buytickets/BRKH/20250730": os.getenv('BRAM_0730_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/bhramaramba-70mm-a-c-4k-dolby-kukatpally/buytickets/BRKH/20250730": os.getenv('BRAM_0731_EMAILS', ''),
+    
 }
 
 # Get all unique theatre URLs for checking
