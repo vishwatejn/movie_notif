@@ -46,23 +46,77 @@ def load_notification_tracking():
     """Load notification tracking data from file"""
     try:
         if os.path.exists(NOTIFICATION_TRACKING_FILE):
+            # Check if file is empty
+            if os.path.getsize(NOTIFICATION_TRACKING_FILE) == 0:
+                logging.info("Notification tracking file is empty, starting fresh")
+                return {}
+            
             with open(NOTIFICATION_TRACKING_FILE, 'r', encoding='utf-8') as f:
-                tracking_data = json.load(f)
+                content = f.read().strip()
+                if not content:
+                    logging.info("Notification tracking file is empty, starting fresh")
+                    return {}
+                
+                tracking_data = json.loads(content)
                 logging.info(f"Loaded notification tracking data: {len(tracking_data)} entries")
                 return tracking_data
         else:
             logging.info("No notification tracking file found, starting fresh")
             return {}
+    except json.JSONDecodeError as e:
+        logging.error(f"Invalid JSON in notification tracking file: {e}")
+        logging.info("Creating backup of corrupted file and starting fresh")
+        # Create backup of corrupted file
+        backup_name = f"{NOTIFICATION_TRACKING_FILE}.backup.{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        try:
+            os.rename(NOTIFICATION_TRACKING_FILE, backup_name)
+            logging.info(f"Corrupted file backed up as {backup_name}")
+        except Exception as backup_error:
+            logging.error(f"Failed to backup corrupted file: {backup_error}")
+        return {}
     except Exception as e:
         logging.error(f"Error loading notification tracking: {e}")
         return {}
 
 def save_notification_tracking(tracking_data):
-    """Save notification tracking data to file"""
+    """Save notification tracking data to file and commit to git for persistence"""
     try:
+        # Save to file
         with open(NOTIFICATION_TRACKING_FILE, 'w', encoding='utf-8') as f:
             json.dump(tracking_data, f, indent=2, ensure_ascii=False)
         logging.info(f"Saved notification tracking data: {len(tracking_data)} entries")
+        
+        # Commit to git for persistence between runs
+        try:
+            import subprocess
+            import os
+            
+            # Check if we're in a git repository
+            result = subprocess.run(['git', 'status'], capture_output=True, text=True, cwd='.')
+            if result.returncode == 0:
+                # We're in a git repo, commit the tracking file
+                subprocess.run(['git', 'add', NOTIFICATION_TRACKING_FILE], check=True, cwd='.')
+                subprocess.run(['git', 'config', '--local', 'user.email', 'movie-notifier@github.actions'], check=True, cwd='.')
+                subprocess.run(['git', 'config', '--local', 'user.name', 'Movie Notifier Bot'], check=True, cwd='.')
+                
+                # Check if there are changes to commit
+                status_result = subprocess.run(['git', 'status', '--porcelain'], capture_output=True, text=True, cwd='.')
+                if status_result.stdout.strip():
+                    commit_message = f"Update notification tracking - {len(tracking_data)} entries - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+                    subprocess.run(['git', 'commit', '-m', commit_message], check=True, cwd='.')
+                    logging.info(f"Committed tracking data to git: {commit_message}")
+                else:
+                    logging.info("No changes to commit in tracking file")
+            else:
+                logging.info("Not in a git repository, skipping git commit")
+                
+        except subprocess.CalledProcessError as e:
+            logging.warning(f"Failed to commit tracking data to git: {e}")
+            logging.info("Tracking data saved to file but not committed to git")
+        except Exception as e:
+            logging.warning(f"Error with git operations: {e}")
+            logging.info("Tracking data saved to file but git operations failed")
+            
     except Exception as e:
         logging.error(f"Error saving notification tracking: {e}")
 
@@ -72,7 +126,7 @@ def create_notification_key(theatre_url, recipient_emails):
     theatre_name, date = extract_theatre_info(theatre_url)
     # Create a unique key combining theatre, date, and recipients
     #recipient_key = ','.join(sorted(recipient_emails))
-    return f"{theatre_name}_{date}"
+    return f"{theatre_name}_{date}_{MOVIE_NAME}"
 
 def is_notification_sent(theatre_url, recipient_emails, tracking_data):
     """Check if notification was already sent for this theatre/date/recipients combination"""
