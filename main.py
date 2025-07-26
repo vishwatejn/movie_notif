@@ -18,9 +18,12 @@ logging.basicConfig(
 
 # ---- CONFIGURATION ----
 THEATRE_URLS = [
-"https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250726",
-"https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250726"]
-MOVIE_NAME = "The Fantastic Four: First Steps"
+"https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250809",
+"https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250809",
+"https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250808",
+"https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250808",
+]
+MOVIE_NAME = "Athadu"
 
 # Email configuration - use environment variables for security
 SMTP_SERVER = 'smtp.gmail.com'
@@ -375,9 +378,9 @@ def send_email(available_theatres):
     # Create subject line
     if len(available_theatres) == 1:
         theatre = available_theatres[0]
-        msg['Subject'] = f"'{MOVIE_NAME}' tickets now available at {theatre['theatre']} on {theatre['date']}!"
+        msg['Subject'] = f"PENU TOOFANU thalonchi choosthe... tickets now available at {theatre['theatre']} on {theatre['date']}!"
     else:
-        msg['Subject'] = f"'{MOVIE_NAME}' tickets now available at {len(available_theatres)} theatres!"
+        msg['Subject'] = f"PENU TOOFANU thalonchi choosthe... tickets now available at {len(available_theatres)} theatres!"
     
     msg['From'] = SENDER_EMAIL
     msg['To'] = ', '.join(RECIPIENT_EMAILS)  # Join multiple recipients with commas
