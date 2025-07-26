@@ -8,6 +8,8 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Allow writing to repository for tracking persistence
 
     steps:
       - name: Checkout code
@@ -24,11 +26,17 @@ jobs:
           pip install -r requirements.txt
           playwright install chromium
 
+      - name: Pull latest tracking data
+        run: |
+          # Pull latest changes to get updated tracking file
+          git pull origin main || echo "No changes to pull"
+          echo "Current tracking file status:"
+          ls -la notification_tracking.json 2>/dev/null || echo "No tracking file found"
+
       - name: Run notifier script
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-          RECIPIENT_EMAILS: ${{ secrets.RECIPIENT_EMAILS }}
           PRASADS_0727_EMAILS: ${{ secrets.PRASADS_0727_EMAILS }}
         run: python main_with_tracking.py
         timeout-minutes: 10
