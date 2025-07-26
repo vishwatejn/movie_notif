@@ -31,3 +31,10 @@ jobs:
           RECIPIENT_EMAILS: ${{ secrets.RECIPIENT_EMAILS }}
         run: python main.py
         timeout-minutes: 10
+
+      - name: Upload debug files
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug-files
+          path: debug_*.html,debug_*.json,debug_*.txt
