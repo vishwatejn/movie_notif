@@ -51,3 +51,4 @@ jobs:
             debug_*.html
             debug_*.json
             debug_*.txt
+            notification_tracking.json
