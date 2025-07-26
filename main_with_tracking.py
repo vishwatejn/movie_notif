@@ -32,7 +32,7 @@ THEATRE_EMAIL_MAPPING = {
 # Get all unique theatre URLs for checking
 THEATRE_URLS = list(THEATRE_EMAIL_MAPPING.keys())
 
-MOVIE_NAME = "F1: The Movie"
+MOVIE_NAME = "Kingdom"
 
 # Email configuration - use environment variables for security
 SMTP_SERVER = 'smtp.gmail.com'
@@ -319,7 +319,7 @@ def extract_theatre_info(url):
     try:
         # Parse URL to extract theatre name and date
         parts = url.split('/')
-        theatre_part = parts[4]  # e.g., "prasads-multiplex-hyderabad"
+        theatre_part = parts[5]  # e.g., "prasads-multiplex-hyderabad"
         date_part = parts[-1]    # e.g., "20250809"
         
         # Convert theatre name to readable format
