@@ -554,7 +554,7 @@ def send_email(available_theatres):
                 msg['Subject'] = f"PENU TOOFANU thalonchi choosthe... tickets now available at {len(theatres)} theatres!"
             
             msg['From'] = SENDER_EMAIL
-            msg['To'] = ', '.join(recipient_emails)
+            msg['Bcc'] = ', '.join(recipient_emails)
             
             # Create email content
             content = f"Great news! '{MOVIE_NAME}' tickets are now available!\n\n"
