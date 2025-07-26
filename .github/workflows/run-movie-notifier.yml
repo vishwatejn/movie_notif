@@ -32,9 +32,21 @@ jobs:
         run: python main.py
         timeout-minutes: 10
 
+      - name: List files before upload
+        if: always()
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls -la
+          echo "Looking for debug files:"
+          find . -name "debug_*" -type f 2>/dev/null || echo "No debug files found"
+
       - name: Upload debug files
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: debug-files
-          path: debug_*.html,debug_*.json,debug_*.txt
+          path: |
+            debug_*.html
+            debug_*.json
+            debug_*.txt
