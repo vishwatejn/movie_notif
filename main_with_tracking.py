@@ -20,17 +20,14 @@ logging.basicConfig(
 # Theatre URL to email mapping - each theatre can have specific recipients
 # Format: "theatre_url": "comma_separated_emails"
 THEATRE_EMAIL_MAPPING = {
-    "https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250809": os.getenv('SUDARSHAN_0908_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250809": os.getenv('PRASADS_0908_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250808": os.getenv('SUDARSHAN_0808_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250808": os.getenv('PRASADS_0808_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250727": os.getenv('PRASADS_0727_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/amb-cinemas-gachibowli/buytickets/AMBH/20250730": os.getenv('AMB_0730_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/amb-cinemas-gachibowli/buytickets/AMBH/20250731": os.getenv('AMB_0731_EMAILS', ''),
 }
 
 # Get all unique theatre URLs for checking
 THEATRE_URLS = list(THEATRE_EMAIL_MAPPING.keys())
 
-MOVIE_NAME = "Hari Hara Veera Mallu"
+MOVIE_NAME = "Kingdom"
 
 # Email configuration - use environment variables for security
 SMTP_SERVER = 'smtp.gmail.com'
