@@ -202,7 +202,7 @@ async def check_movie():
                 logging.info(f"Checking {url}")
                 
                 async with async_playwright() as p:
-                    # Launch browser with stealth settings
+                    # Launch browser with enhanced stealth settings
                     browser = await p.chromium.launch(
                         headless=True,
                         args=[
@@ -212,13 +212,47 @@ async def check_movie():
                             '--disable-accelerated-2d-canvas',
                             '--no-first-run',
                             '--no-zygote',
-                            '--disable-gpu'
+                            '--disable-gpu',
+                            '--disable-web-security',
+                            '--disable-features=VizDisplayCompositor',
+                            '--disable-background-timer-throttling',
+                            '--disable-backgrounding-occluded-windows',
+                            '--disable-renderer-backgrounding',
+                            '--disable-field-trial-config',
+                            '--disable-ipc-flooding-protection',
+                            '--disable-hang-monitor',
+                            '--disable-prompt-on-repost',
+                            '--disable-client-side-phishing-detection',
+                            '--disable-component-extensions-with-background-pages',
+                            '--disable-default-apps',
+                            '--disable-extensions',
+                            '--disable-sync',
+                            '--disable-translate',
+                            '--hide-scrollbars',
+                            '--mute-audio',
+                            '--no-default-browser-check',
+                            '--safebrowsing-disable-auto-update',
+                            '--disable-blink-features=AutomationControlled'
                         ]
                     )
                     
                     context = await browser.new_context(
-                        user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                        viewport={'width': 1920, 'height': 1080}
+                        user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                        viewport={'width': 1920, 'height': 1080},
+                        locale='en-US',
+                        timezone_id='Asia/Kolkata',
+                        extra_http_headers={
+                            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                            'Accept-Language': 'en-US,en;q=0.5',
+                            'Accept-Encoding': 'gzip, deflate, br',
+                            'DNT': '1',
+                            'Connection': 'keep-alive',
+                            'Upgrade-Insecure-Requests': '1',
+                            'Sec-Fetch-Dest': 'document',
+                            'Sec-Fetch-Mode': 'navigate',
+                            'Sec-Fetch-Site': 'none',
+                            'Cache-Control': 'max-age=0'
+                        }
                     )
                     
                     # Create a new page for each URL to avoid state issues
