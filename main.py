@@ -24,7 +24,7 @@ MOVIE_NAME = "The Fantastic Four: First Steps"
 
 # Email configuration - use environment variables for security
 SMTP_SERVER = 'smtp.gmail.com'
-SMTP_PORT = 465
+SMTP_PORT = 465  # Use 587 for TLS or 465 for SSL
 SENDER_EMAIL = os.getenv('SENDER_EMAIL', 'your_email@gmail.com')
 SENDER_PASSWORD = os.getenv('SENDER_PASSWORD', 'your_email_password')
 # Support multiple recipients - comma-separated in environment variable
@@ -349,17 +349,26 @@ async def check_movie():
         return []
 
 def send_email(available_theatres):
-    if SENDER_EMAIL == 'your_email@gmail.com':
-        logging.warning("Email not configured. Skipping email notification.")
+    # Validate email configuration
+    if SENDER_EMAIL == 'your_email@gmail.com' or not SENDER_EMAIL:
+        logging.warning("Sender email not configured. Skipping email notification.")
+        return
+    
+    if not SENDER_PASSWORD or SENDER_PASSWORD == 'your_email_password':
+        logging.warning("Sender password not configured. Skipping email notification.")
         return
     
     if not available_theatres:
         logging.warning("No theatres available to send email about.")
         return
     
-    if not RECIPIENT_EMAILS or RECIPIENT_EMAILS == ['recipient@example.com']:
+    if not RECIPIENT_EMAILS or RECIPIENT_EMAILS == ['recipient@example.com'] or not any(RECIPIENT_EMAILS):
         logging.warning("Recipient emails not configured. Skipping email notification.")
         return
+    
+    # Log email configuration (without sensitive data)
+    logging.info(f"Attempting to send email from {SENDER_EMAIL} to {len(RECIPIENT_EMAILS)} recipient(s)")
+    logging.info(f"Using SMTP server: {SMTP_SERVER}:{SMTP_PORT}")
         
     msg = EmailMessage()
     
@@ -391,13 +400,22 @@ def send_email(available_theatres):
     msg.set_content(content)
 
     try:
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as smtp:
-            smtp.starttls()
-            smtp.login(SENDER_EMAIL, SENDER_PASSWORD)
-            smtp.send_message(msg)
+        # Use SMTP_SSL for port 465 (SSL) or SMTP with starttls for port 587 (TLS)
+        if SMTP_PORT == 465:
+            with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, timeout=30) as smtp:
+                smtp.login(SENDER_EMAIL, SENDER_PASSWORD)
+                smtp.send_message(msg)
+        else:
+            with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=30) as smtp:
+                smtp.starttls()
+                smtp.login(SENDER_EMAIL, SENDER_PASSWORD)
+                smtp.send_message(msg)
         logging.info(f"Notification email sent to {len(RECIPIENT_EMAILS)} recipient(s): {', '.join(RECIPIENT_EMAILS)}")
     except Exception as e:
         logging.error(f"Error sending email: {e}")
+        # Add more detailed error logging
+        import traceback
+        logging.error(f"Full error traceback: {traceback.format_exc()}")
 
 async def main():
     logging.info("Movie notification check started!")
