@@ -38,13 +38,13 @@ def parse_venue_api_data(page_content, movie_name, target_date, url):
     """
     try:
         # Create a timestamp for unique filenames
-        # timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
         # Save the full page content for debugging
-        # page_filename = f"debug_page_content_{timestamp}.html"
-        # with open(page_filename, 'w', encoding='utf-8') as f:
-        #     f.write(page_content)
-        # logging.info(f"Saved full page content to {page_filename}")
+        page_filename = f"debug_page_content_{timestamp}.html"
+        with open(page_filename, 'w', encoding='utf-8') as f:
+            f.write(page_content)
+        logging.info(f"Saved full page content to {page_filename}")
         
         # Look for the venueShowtimesFunctionalApi object
         if 'Event' not in page_content:
@@ -68,10 +68,10 @@ def parse_venue_api_data(page_content, movie_name, target_date, url):
         api_data_str = api_match.group(1)
         
         # Save the extracted API data for debugging
-        # api_filename = f"debug_api_data_{timestamp}.json"
-        # with open(api_filename, 'w', encoding='utf-8') as f:
-        #     f.write(api_data_str)
-        # logging.info(f"Saved extracted API data to {api_filename}")
+        api_filename = f"debug_api_data_{timestamp}.json"
+        with open(api_filename, 'w', encoding='utf-8') as f:
+            f.write(api_data_str)
+        logging.info(f"Saved extracted API data to {api_filename}")
         
         # Parse the JSON data properly
         try:
@@ -147,18 +147,18 @@ def parse_venue_api_data(page_content, movie_name, target_date, url):
                     break
         
         # Save a summary of what we found
-        # summary_filename = f"debug_summary_{timestamp}.txt"
-        # with open(summary_filename, 'w', encoding='utf-8') as f:
-        #     f.write(f"URL: {url}\n")
-        #     f.write(f"Movie: {movie_name}\n")
-        #     f.write(f"Target Date: {target_date}\n")
-        #     f.write(f"Movie Found: {movie_found}\n")
-        #     f.write(f"Has Showtimes: {has_showtimes}\n")
-        #     f.write(f"Total Events: {len(events_data)}\n")
-        #     if movie_found:
-        #         f.write(f"Events checked: {[event.get('EventTitle', 'Unknown') for event in events_data]}\n")
-        # 
-        # logging.info(f"Saved summary to {summary_filename}")
+        summary_filename = f"debug_summary_{timestamp}.txt"
+        with open(summary_filename, 'w', encoding='utf-8') as f:
+            f.write(f"URL: {url}\n")
+            f.write(f"Movie: {movie_name}\n")
+            f.write(f"Target Date: {target_date}\n")
+            f.write(f"Movie Found: {movie_found}\n")
+            f.write(f"Has Showtimes: {has_showtimes}\n")
+            f.write(f"Total Events: {len(events_data)}\n")
+            if movie_found:
+                f.write(f"Events checked: {[event.get('EventTitle', 'Unknown') for event in events_data]}\n")
+        
+        logging.info(f"Saved summary to {summary_filename}")
         
         return movie_found, has_showtimes
         
