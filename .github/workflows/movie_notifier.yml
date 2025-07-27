@@ -43,6 +43,8 @@ jobs:
           BRAM_0731_EMAILS: ${{ secrets.BRAM_0731_EMAILS }}
           MALLI_0730_EMAILS: ${{ secrets.MALLI_0730_EMAILS }}
           MALLI_0731_EMAILS: ${{ secrets.MALLI_0731_EMAILS }}
+          SUD_0730_EMAILS: ${{ secrets.SUD_0730_EMAILS }}
+          PRAS_0730_EMAILS: ${{ secrets.PRAS_0730_EMAILS }}
         run: python main_with_tracking.py
         timeout-minutes: 10
 
