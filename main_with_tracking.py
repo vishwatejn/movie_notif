@@ -20,20 +20,18 @@ logging.basicConfig(
 # Theatre URL to email mapping - each theatre can have specific recipients
 # Format: "theatre_url": "comma_separated_emails"
 THEATRE_EMAIL_MAPPING = {
-    "https://in.bookmyshow.com/cinemas/hyderabad/amb-cinemas-gachibowli/buytickets/AMBH/20250730": os.getenv('AMB_0730_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/amb-cinemas-gachibowli/buytickets/AMBH/20250731": os.getenv('AMB_0731_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/mallikarjuna-70mm-a-c-dts-kukatpally/buytickets/MAHM/20250730": os.getenv('MALLI_0730_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/mallikarjuna-70mm-a-c-dts-kukatpally/buytickets/MAHM/20250731": os.getenv('MALLI_0731_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/bhramaramba-70mm-a-c-4k-dolby-kukatpally/buytickets/BRKH/20250730": os.getenv('BRAM_0730_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/bhramaramba-70mm-a-c-4k-dolby-kukatpally/buytickets/BRKH/20250730": os.getenv('BRAM_0731_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250730": os.getenv('PRAS_0730_EMAILS', ''),
-    "https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250730": os.getenv('SUD_0730_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/amb-cinemas-gachibowli/buytickets/AMBH/20250808": os.getenv('AMB_0808_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/amb-cinemas-gachibowli/buytickets/AMBH/20250809": os.getenv('AMB_0809_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250808": os.getenv('PRAS_0808_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250809": os.getenv('PRAS_0809_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250808": os.getenv('SUD_0808_EMAILS', ''),
+    "https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250809": os.getenv('SUD_0809_EMAILS', ''),
 }
 
 # Get all unique theatre URLs for checking
 THEATRE_URLS = list(THEATRE_EMAIL_MAPPING.keys())
 
-MOVIE_NAME = "Kingdom"
+MOVIE_NAME = "Athadu"
 
 # Email configuration - use environment variables for security
 SMTP_SERVER = 'smtp.gmail.com'
@@ -555,9 +553,9 @@ def send_email(available_theatres):
             # Create subject line
             if len(theatres) == 1:
                 theatre = theatres[0]
-                msg['Subject'] = f"{MOVIE_NAME} tickets now available at {theatre['theatre']} on {theatre['date']}!"
+                msg['Subject'] = f"PENU TOOFANU thaloni choosthe... {MOVIE_NAME} tickets now available at {theatre['theatre']} on {theatre['date']}!"
             else:
-                msg['Subject'] = f"{MOVIE_NAME} tickets now available at {len(theatres)} theatres!"
+                msg['Subject'] = f"PENU TOOFANU thaloni choosthe... {MOVIE_NAME} tickets now available at {len(theatres)} theatres!"
             
             msg['From'] = SENDER_EMAIL
             msg['Bcc'] = ', '.join(recipient_emails)
