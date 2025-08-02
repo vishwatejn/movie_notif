@@ -22,5 +22,15 @@
     "theatre_url": "https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250809",
     "sent_at": "2025-08-02T10:48:25.626036",
     "movie_name": "Athadu"
+  },
+  "Amb Cinemas Gachibowli_09/08/2025_Athadu": {
+    "theatre_url": "https://in.bookmyshow.com/cinemas/hyderabad/amb-cinemas-gachibowli/buytickets/AMBH/20250809",
+    "sent_at": "2025-08-02T11:32:42.891004",
+    "movie_name": "Athadu"
+  },
+  "Sudarshan 35mm_09/08/2025_Athadu": {
+    "theatre_url": "https://in.bookmyshow.com/cinemas/hyderabad/sudarshan-35mm-4k-laser-dolby-atmos-rtc-x-roads/buytickets/SUDA/20250809",
+    "sent_at": "2025-08-02T11:32:42.891027",
+    "movie_name": "Athadu"
   }
 }
