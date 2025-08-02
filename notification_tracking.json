@@ -17,5 +17,10 @@
     "theatre_url": "https://in.bookmyshow.com/cinemas/hyderabad/amb-cinemas-gachibowli/buytickets/AMBH/20250731",
     "sent_at": "2025-07-27T03:56:47.793173",
     "movie_name": "Kingdom"
+  },
+  "Prasads Multiplex_09/08/2025_Athadu": {
+    "theatre_url": "https://in.bookmyshow.com/cinemas/hyderabad/prasads-multiplex-hyderabad/buytickets/PRHN/20250809",
+    "sent_at": "2025-08-02T10:48:25.626036",
+    "movie_name": "Athadu"
   }
 }
